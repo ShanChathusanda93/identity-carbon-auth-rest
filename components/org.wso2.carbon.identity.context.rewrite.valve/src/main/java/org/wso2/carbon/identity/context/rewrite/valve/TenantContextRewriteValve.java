@@ -354,6 +354,19 @@ public class TenantContextRewriteValve extends ValveBase {
                 "SubPaths.Path");
         setSubPathContexts(organizationRewriteContexts, webAppSubPathContexts);
 
+        Object servletBasePathContexts = configuration.get("OrgContextsToRewriteInTenantPerspective.Servlet.Context");
+
+        if (servletBasePathContexts != null) {
+            if (servletBasePathContexts instanceof ArrayList) {
+                for (String context : (ArrayList<String>) servletBasePathContexts) {
+                    organizationRewriteContexts.add(new OrganizationRewriteContext(false, context));
+                }
+            } else {
+                organizationRewriteContexts.add(new OrganizationRewriteContext(false,
+                        servletBasePathContexts.toString()));
+            }
+        }
+
         return organizationRewriteContexts;
     }
 
